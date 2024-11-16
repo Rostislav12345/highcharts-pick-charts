@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highcharts</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Pick chart:</h1>
+    <select name="chart" id="chart">
+        <option value="line">line</option>
+        <option value="column">column</option>
+        <option value="pie">pie</option>
+        <option value="area">area</option>
+    </select>
+    <button id="submit">submit</button>
+    <div id="container" style="width: 80%; height: 400px; margin: 0 auto;"></div>
+    <script>
+        $(document).ready(function(){
+            let pickchart = document.getElementById('chart').value
+            let submit = document.getElementById('submit')
+            $('#submit').click(function() {
+                pickchart = document.getElementById('chart').value
+                $.getJSON('/chart-data', function(data) {
+                Highcharts.chart('container', {
+                    chart: {type: pickchart},
+                    title: { text:'Dynamic Data From Flask'},
+                    xAxis: {categories: data.categories },
+                    yAxis: {title:{text: 'Value'}},
+                    series: data.series
+                })
+            })
+            })
+        })
+    </script>
+</body>
+</html>
